@@ -1,4 +1,4 @@
-import { format, startOfDay, differenceInDays, addDays, subDays, isToday, isSameDay } from 'date-fns';
+import { format, startOfDay, differenceInDays, subDays, isToday, isSameDay } from 'date-fns';
 
 export const calculateStreak = (completions, habitId) => {
   if (!completions || completions.length === 0) {
