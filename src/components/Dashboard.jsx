@@ -4,7 +4,6 @@ import { isSameDay } from 'date-fns';
 import { useHabits, useCompletions } from '../hooks/useFirebase';
 import HabitList from './HabitList/HabitList';
 import HabitForm from './HabitForm/HabitForm';
-import Modal from './common/Modal';
 import LoadingSpinner from './common/LoadingSpinner';
 import Alert from './common/Alert';
 
@@ -55,6 +54,15 @@ const Dashboard = () => {
       todayCompleted: todayCompletions.length,
     };
   }, [habits, completions]);
+
+  // Extract unique categories from habits
+  const categories = useMemo(() => {
+    const cats = habits
+      .map(h => h.category)
+      .filter(Boolean)
+      .filter((cat, index, self) => self.indexOf(cat) === index);
+    return cats;
+  }, [habits]);
 
   const handleAddHabit = async (habitData) => {
     try {
@@ -189,13 +197,16 @@ const Dashboard = () => {
       </div>
 
       {/* Add/Edit Habit Modal */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <HabitForm
-          habit={editingHabit}
-          onSubmit={editingHabit ? handleEditHabit : handleAddHabit}
-          onCancel={() => setIsModalOpen(false)}
-        />
-      </Modal>
+      <HabitForm
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingHabit(null);
+        }}
+        onSubmit={editingHabit ? handleEditHabit : handleAddHabit}
+        habit={editingHabit}
+        existingCategories={categories}
+      />
     </div>
   );
 };
