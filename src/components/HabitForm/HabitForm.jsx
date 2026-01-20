@@ -321,9 +321,11 @@ const HabitForm = ({ isOpen, onClose, onSubmit, habit = null, existingCategories
             type="button"
             onClick={handleClose}
             disabled={isSubmitting}
-            className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Cancel"
           >
             <X className="w-4 h-4" />
+            Cancel
           </button>
         </div>
       </form>
