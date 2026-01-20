@@ -26,9 +26,9 @@ export const useHabits = () => {
       // Reset state when user logs out
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setHabits([]);
-       
+
       setLoading(false);
-       
+
       setError(null);
       return;
     }

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Target, TrendingUp, Calendar, Award } from 'lucide-react';
+import { isSameDay } from 'date-fns';
 import { useHabits, useCompletions } from '../hooks/useFirebase';
 import HabitList from './HabitList/HabitList';
 import HabitForm from './HabitForm/HabitForm';
@@ -17,11 +18,11 @@ const Dashboard = () => {
   // Calculate statistics
   const stats = useMemo(() => {
     const activeHabits = habits.filter((h) => !h.archived);
-    const today = new Date().toDateString();
+    const today = new Date();
     
     // Get today's completions
-    const todayCompletions = completions.filter(
-      (c) => c.date?.toDate().toDateString() === today
+    const todayCompletions = completions.filter((c) =>
+      isSameDay(c.date?.toDate(), today)
     );
     
     // Calculate completion rate for today

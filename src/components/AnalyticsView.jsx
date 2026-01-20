@@ -4,6 +4,8 @@ import { format, subDays, startOfDay, isSameDay } from 'date-fns';
 import { useHabits, useCompletions } from '../hooks/useFirebase';
 import LoadingSpinner from './common/LoadingSpinner';
 
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
 const AnalyticsView = () => {
   const [timeRange, setTimeRange] = useState(30); // days
   const { habits, loading: habitsLoading } = useHabits();
@@ -44,7 +46,7 @@ const AnalyticsView = () => {
     return activeHabits.map((habit) => {
       const last30Days = completions.filter((c) => {
         const completionDate = c.date?.toDate();
-        const daysDiff = (new Date() - completionDate) / (1000 * 60 * 60 * 24);
+        const daysDiff = (new Date() - completionDate) / MS_PER_DAY;
         return c.habitId === habit.id && daysDiff <= 30;
       });
 
@@ -61,13 +63,13 @@ const AnalyticsView = () => {
     const totalCompletions = completions.length;
     const last7Days = completions.filter((c) => {
       const completionDate = c.date?.toDate();
-      const daysDiff = (new Date() - completionDate) / (1000 * 60 * 60 * 24);
+      const daysDiff = (new Date() - completionDate) / MS_PER_DAY;
       return daysDiff <= 7;
     });
 
     const last30Days = completions.filter((c) => {
       const completionDate = c.date?.toDate();
-      const daysDiff = (new Date() - completionDate) / (1000 * 60 * 60 * 24);
+      const daysDiff = (new Date() - completionDate) / MS_PER_DAY;
       return daysDiff <= 30;
     });
 
