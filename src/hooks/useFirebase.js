@@ -23,11 +23,17 @@ export const useHabits = () => {
 
   useEffect(() => {
     if (!currentUser) {
+      // Reset state when user logs out
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHabits([]);
+
       setLoading(false);
+
+      setError(null);
       return;
     }
 
+    setLoading(true);
     const habitsRef = collection(db, 'habits');
     const q = query(
       habitsRef,

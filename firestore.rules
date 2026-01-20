@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Habits collection
+    match /habits/{habitId} {
+      // Allow read if authenticated and user owns the habit
+      allow read: if isAuthenticated() && isOwner(resource.data.userId);
+      
+      // Allow create if authenticated and setting correct userId
+      allow create: if isAuthenticated() && isOwner(request.resource.data.userId);
+      
+      // Allow update/delete if authenticated and user owns the habit
+      allow update, delete: if isAuthenticated() && isOwner(resource.data.userId);
+    }
+    
+    // Completions collection
+    match /completions/{completionId} {
+      // Allow read if authenticated and user owns the completion
+      allow read: if isAuthenticated() && isOwner(resource.data.userId);
+      
+      // Allow create if authenticated and setting correct userId
+      allow create: if isAuthenticated() && isOwner(request.resource.data.userId);
+      
+      // Allow update/delete if authenticated and user owns the completion
+      allow update, delete: if isAuthenticated() && isOwner(resource.data.userId);
+    }
+    
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
